@@ -1,10 +1,10 @@
-# ingredients-demo-dryrun
+# copilot-extension-workshop
 
 1. Create a repo
 
 | Field           | Value                          |
 | --------------- | ------------------------------ |
-| Repository name | <e.g. ingredients-demo-dryrun> |
+| Repository name | <e.g. ingredients-demo-js> |
 | Readme          | Add                            |
 | .gitignore      | Node                           |
 
@@ -55,7 +55,7 @@ Example content for [index.js](https://gist.github.com/colinbeales/28141460eb151
 
 | Field                             | Value                                       |
 | --------------------------------- | ------------------------------------------- |
-| GitHub App name                   | <e.g. ingredients-demo-dryrun>              |
+| GitHub App name                   | <e.g. ingredients-demo-js>              |
 | Description                       | <description of the ingrediebnts demo>      |
 | Homepage URL                      | <pasted from public codespace URL>          |
 | Callback URL                      | <pasted from public codespace URL>/callback |
