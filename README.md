@@ -175,6 +175,8 @@ const token = req.headers["x-github-token"];
 
 11. Output the model repsonse to Copilot
 
+For this we will use the [Copilot Extension - Preview SDK](https://github.com/copilot-extensions/preview-sdk.js) this simplifies a number of operations in javascript extensions, such as formatting the response, but also more advanced features like confirmation message and very importantly security scenarios such as checking a request came from GitHub and signed by GitHub based on public key.
+
 - Add import to the Copilot-Extension preview-sdk to the imports section
 
 ```JS
