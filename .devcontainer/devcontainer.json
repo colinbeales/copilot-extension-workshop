@@ -1,0 +1,13 @@
+{
+  "name": "Node.js & TypeScript",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "customizations": {
+    "vscode": {
+        "extensions": [
+            "GitHub.copilot",
+            "GitHub.copilot-chat"
+        ]
+    }
+  },
+  "postCreateCommand": "npm install"
+}
