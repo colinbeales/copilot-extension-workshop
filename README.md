@@ -1,6 +1,6 @@
 # copilot-extension-workshop
 
-1. Create a repo
+## 1. Create a repo
 
 | Field           | Value                          |
 | --------------- | ------------------------------ |
@@ -8,36 +8,74 @@
 | Readme          | Add                            |
 | .gitignore      | Node                           |
 
-2. Add /.devcontainer/devcontainer.json
+## 2. Create devcontainer.json for Codespace details
 
-- Content of [devcontainer.json](https://gist.github.com/colinbeales/9c9a96cd00571e6fcaaac705258024d3#file-devcontainer-json)
-- Commit
+- Using the Web UI for the new repo add a new file /.devcontainer/devcontainer.json
 
-3. Start Codespace
+```JSON
+{
+  "name": "Node.js & TypeScript",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "customizations": {
+    "vscode": {
+        "extensions": [
+            "GitHub.copilot",
+            "GitHub.copilot-chat"
+        ]
+    }
+  },
+  "postCreateCommand": "npm install"
+}
+```
+- Commit this file to the repo so it can be used for your Codespace
 
-4. Add ./packages.json
+## 3. Start Codespace
 
-- Content of [package.json](https://gist.github.com/colinbeales/1e1364d93c10fe318e4b4ae04940b89a#file-package-json)
+- Start a the codespace now it defines your dev environment and VS Code Copilot Extension
 
-- Call `npm install`
+## 4. Add ./packages.json
 
-5. Implement simple express API
+- In VS Code add a new file ./packages.json and add the following content
 
-Should be Async
+```JSON
+{
+    "name": "ingredients-extension-js",
+    "version": "1.0.0",
+    "description": "A JavaScript project with Express and Azure AI Inference",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "@copilot-extensions/preview-sdk": "^4.0.2",
+      "@azure-rest/ai-inference": "^1.0.0-beta.2",
+      "@azure/core-auth": "^1.3.0",
+      "express": "^4.21.0"
+    },
+    "author": "",
+    "license": "ISC"
+}
+```
 
-Should use JSON Middleware i.e. `app.use(express.json());`
+- In the terminal call `npm install`
 
-Needs Endpoints:
+## 5. Implement a simple Express based API
 
-- GET / - To prove this API works
+- In VS Code add a new file `index.js`
 
-- GET /callback - Output from a callback on registration
+- Try using Copilot Chat to generate your API. Use a prompt like, "Create an Express based API with a GET endpoint for / and /callback and a POST endpoint for /agent. Each endpoint should log a call to the console.
 
-- POST /agent - Where our Copilot Extension will be called from
+Some notes (of what you want from Copilot (or paste in the below linked example gist code):
+- Should be Async
+- Should use JSON Middleware i.e. `app.use(express.json());`
+- Has a GET / - To prove this API works
+- Has a GET /callback - Output from a callback on registration
+- Has POST /agent - Where our Copilot Extension will be called from
 
 Example content for [index.js](https://gist.github.com/colinbeales/28141460eb151d867a3d4718f1a067ff#file-index-js)
 
-6. Run API in the Codespace
+## 6. Run API in the Codespace
 
 - Run `node index.js`
 
@@ -47,7 +85,7 @@ Example content for [index.js](https://gist.github.com/colinbeales/28141460eb151
 
 - Show `/` and `/callback` endpoints functioning.
 
-7. Register Copilot Extension as a GitHub App
+## 7. Register Copilot Extension as a GitHub App
 
 - Head to [Settings->Developer Settings->GitHub Apps](https://github.com/settings/apps) and select 'New GitHub App' button
 
@@ -55,11 +93,11 @@ Example content for [index.js](https://gist.github.com/colinbeales/28141460eb151
 
 | Field                             | Value                                       |
 | --------------------------------- | ------------------------------------------- |
-| GitHub App name                   | <e.g. ingredients-demo-js>              |
-| Description                       | <description of the ingrediebnts demo>      |
-| Homepage URL                      | <pasted from public codespace URL>          |
-| Callback URL                      | <pasted from public codespace URL>/callback |
-| WebHook                           | Change to <inactive>                        |
+| GitHub App name                   | <e.g. ingredients-demo-js>                  |
+| Description                       | takes ingredients to return recipes         |
+| Homepage URL                      | [pasted from public codespace URL]          |
+| Callback URL                      | [pasted from public codespace URL]/callback |
+| WebHook                           | Change to [inactive]                        |
 | Account Permissions->Copilot Chat | Read-only                                   |
 
 Click 'Create GitHub App' button.
@@ -69,14 +107,14 @@ Click 'Create GitHub App' button.
 | Field                 | Value                                          |
 | --------------------- | ---------------------------------------------- |
 | App Type              | Agent                                          |
-| URL                   | <pasted from public codespace URL>/agent       |
+| URL                   | [pasted from public codespace URL]/agent       |
 | Inference Description | <e.g. list ingredients for recipe suggestions> |
 
 Click 'Save' to save these changes.
 
 - Head to 'Install App' tab and click Install the App.
 
-8. Add code to get ingredients from body (and debug using CLI):
+## 8. Add code to get ingredients from body (and debug using CLI):
 
 - Install CLI Debug Tool `gh extension install github.com/copilot-extensions/gh-debug-cli` onto GitHub CLI
 
@@ -97,7 +135,7 @@ res.end();
 
 - Check ingredients taken from the last message
 
-9. Get code from GitHub Models and integrate
+## 9. Get code from GitHub Models and integrate
 
 - Head to [GitHub Marketplace for Models]()
 
@@ -153,7 +191,7 @@ and change to
 const token = req.headers["x-github-token"];
 ```
 
-10. Debug the code from the Web Client (Copilot in GitHub.com)
+## 10. Debug the code from the Web Client (Copilot in GitHub.com)
 
 - Run the webserver: `node index.js` (ensure public)
 
@@ -173,14 +211,14 @@ const token = req.headers["x-github-token"];
 
 - Note that the console.log should have the response from the model output.
 
-11. Output the model repsonse to Copilot
+## 11. Output the model repsonse to Copilot
 
 For this we will use the [Copilot Extension - Preview SDK](https://github.com/copilot-extensions/preview-sdk.js) this simplifies a number of operations in javascript extensions, such as formatting the response, but also more advanced features like confirmation message and very importantly security scenarios such as checking a request came from GitHub and signed by GitHub based on public key.
 
 - Add import to the Copilot-Extension preview-sdk to the imports section
 
 ```JS
-import { createTextEvent, createDoneEvent } from "@copilot-extensions/preview-sdk";
+import { createTextEvent, createDoneEvent, verifyAndParseRequest } from "@copilot-extensions/preview-sdk";
 ```
 
 - replace `res.end();` with `createTextEvent` and `createDoneEvent` i.e.
@@ -195,7 +233,7 @@ import { createTextEvent, createDoneEvent } from "@copilot-extensions/preview-sd
 
 - Check the response now comes to the Copilot in GitHub.com web client.
 
-12. Wire up ingredients prompt into the model
+## 12. Wire up ingredients prompt into the model
 
 - Change the system and user messages to your correct prompt
 
@@ -216,3 +254,41 @@ now changes to something like:
 - Head back to the Copilot Chat in GitHub.com (ignore the Connect - this is done now), click up in the Ask Copilot edit field for your previous `@<extension name> <some ingredients>` command and hit enter
 
 - Check the recipe response now comes to the Copilot in GitHub.com web client.
+
+## 13. [Optional] Adding Security to the endpoint to verify calls come from GitHub
+
+- Edit the existing middleware to have a rawBody in utf8 which is not JSON modified so can be verified as a payload with GitHub's public key.
+  
+```JS
+app.use(express.json();
+```
+
+changing it to 
+
+```JS
+app.use(express.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf.toString('utf8');
+    }
+  }))
+```
+
+- Call verifyAndParseRequest from the Preview SDK to verify the payload. Inserting the following code after the current `const token = req.headers["x-github-token"];` line.
+
+```JS
+    const signature = String(req.headers["github-public-key-signature"]);
+    const keyId = String(req.headers["github-public-key-identifier"]);
+
+    const { isValidRequest, payload, cache } = await verifyAndParseRequest(
+        req.rawBody,
+        signature,
+        keyId,
+        {
+            token: token,
+        },
+    );
+      
+    if (!isValidRequest) {
+        throw new Error("Request could not be verified");
+    }
+```
