@@ -1,16 +1,41 @@
 import express from 'express';
 import ModelClient from "@azure-rest/ai-inference";
 import { AzureKeyCredential } from "@azure/core-auth";
-import { createTextEvent, createDoneEvent } from "@copilot-extensions/preview-sdk";
+import { createTextEvent, createDoneEvent, verifyAndParseRequest } from "@copilot-extensions/preview-sdk";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json()); 
+/**** For optional security section would replace the above line
+app.use(express.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf.toString('utf8');
+    }
+  }))
+*****/
 
 app.post('/agent', async (req, res) => {
     console.log(`Received [${req.method}] to [${req.url}]`);
     const token = req.headers["x-github-token"];
+
+/**** For optional security section
+    const signature = String(req.headers["github-public-key-signature"]);
+    const keyId = String(req.headers["github-public-key-identifier"]);
+
+    const { isValidRequest, payload, cache } = await verifyAndParseRequest(
+        req.rawBody,
+        signature,
+        keyId,
+        {
+            token: token,
+        },
+    );
+
+    if (!isValidRequest) {
+        throw new Error("Request could not be verified");
+    }
+*****/
 
     const { messages } = req.body;
     const ingredients = messages[messages.length - 1].content; 
